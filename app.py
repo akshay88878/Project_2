@@ -69,7 +69,7 @@ async def serve_frontend():
     except FileNotFoundError:
         return HTMLResponse(content="<h1>Frontend not found</h1><p>Please ensure index.html is in the same directory as app.py</p>", status_code=404)
 
-LLM_TIMEOUT_SECONDS = int(os.getenv("LLM_TIMEOUT_SECONDS", 150))
+LLM_TIMEOUT_SECONDS = 175
 
 # -----------------------------
 # Tools
