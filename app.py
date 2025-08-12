@@ -1,3 +1,4 @@
+
 import os
 import networkx as nx
 import re
@@ -475,11 +476,16 @@ async def analyze_data(request: Request):
                         df = pd.read_json(BytesIO(content))
                     except ValueError:
                         df = pd.DataFrame(json.loads(content.decode("utf-8")))
-                elif filename.endswith(".txt"):
+                elif filename.endswith(".png") or filename.endswith(".jpg") or filename.endswith(".jpeg"):
                     try:
-                        df = pd.read_csv(BytesIO(content), sep=None, engine="python")
-                    except Exception:
-                        df = pd.DataFrame({"text": content.decode("utf-8").splitlines()})
+                        if PIL_AVAILABLE:
+                            image = Image.open(BytesIO(content))
+                            image = image.convert("RGB")  # ensure RGB format
+                            df = pd.DataFrame({"image": [image]})  # store as a single column DataFrame
+                        else:
+                            raise ValueError("PIL is not available for image processing.")
+                    except Exception as e:
+                        raise ValueError(f"Failed to process image file: {str(e)}")
                 else:
                     continue  # unsupported type
             except Exception:
@@ -507,7 +513,7 @@ async def analyze_data(request: Request):
                 "2) DO NOT call scrape_url_to_dataframe() or fetch any external data.\n"
                 "3) Use only the uploaded dataset for answering questions.\n"
                 "4) Produce a final JSON object with keys:\n"
-                '   - "questions": keys provided in questions txt file\n'
+                '   - "questions": keys provided in questions txt file \n'
                 '   - "code": "..."  (Python code that fills `results` with exact question strings as keys)\n'
                 "5) For plots: use plot_to_base64() helper to return base64 image data under 100kB.\n"
             )
@@ -516,7 +522,7 @@ async def analyze_data(request: Request):
                 "Rules:\n"
                 "1) If you need web data, CALL scrape_url_to_dataframe(url).\n"
                 "2) Produce a final JSON object with keys:\n"
-                '   - "questions": [ ... original question strings ... ]\n'
+                '   - "questions": keys provided in questions txt file \n'
                 '   - "code": "..."  (Python code that fills `results` with exact question strings as keys)\n'
                 "3) For plots: use plot_to_base64() helper to return base64 image data under 100kB.\n"
             )
