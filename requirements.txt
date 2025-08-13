@@ -19,4 +19,6 @@ openpyxl
 pyarrow
 tabulate
 html5lib
+fsspec
 duckdb
+
