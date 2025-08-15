@@ -486,6 +486,7 @@ def run_agent_safely(llm_input: str) -> Dict:
         results_dict = exec_result.get("result", {})
         # Map to original questions (they asked to use exact question strings)
         output = {}
+        print(results_dict}
         for q in questions:
             output[q] = results_dict.get(q, "Answer not found")
         return output
