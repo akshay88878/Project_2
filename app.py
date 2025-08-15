@@ -678,7 +678,7 @@ def run_agent_safely_unified(llm_input: str, pickle_path: str = None) -> Dict:
 
         results_dict = exec_result.get("result", {})
         print(results_dict)
-        return {q: results_dict.get(q, "Answer not found") for q in questions}
+        return {q: results_dict}
 
     except Exception as e:
         logger.exception("run_agent_safely_unified failed")
