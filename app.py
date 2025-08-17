@@ -336,7 +336,7 @@ def write_and_run_temp_python(code: str, injected_pickle: str = None, timeout: i
         "import base64",
     ]
     preamble.append("import duckdb, re")
-    preamble.append('''
+    preamble.append(r'''
 def normalize_strptime(sql: str) -> str:
     # Pattern to find strptime with any first argument
     pattern = r"strptime\\s*\\(\\s*([^,]+?)\\s*,"
@@ -795,8 +795,16 @@ def run_agent_safely_unified(
                 code, injected_pickle=injected_pickle_path, timeout=LLM_TIMEOUT_SECONDS
             )
 
+                    
+            def strip_data_uri_prefix(val):
+                """Remove data:image/...;base64, prefix from any base64 string"""
+                if isinstance(val, str):
+                    return re.sub(r'^data:image/[a-zA-Z0-9.+-]+;base64,', '', val)
+                return val
+
             if exec_result.get("status") == "success":
-                results_dict = exec_result.get("result", {})
+                raw_results = exec_result.get("result", {})
+                results_dict = {k: strip_data_uri_prefix(v) for k, v in raw_results.items()}
                 if keys_list and type_map:
                     mapped = {}
                     questions = parsed.get("questions", [])
