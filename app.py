@@ -30,6 +30,8 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import io, os, json, re
+import google.generativeai as genai
 
 # Optional image conversion
 try:
@@ -608,9 +610,7 @@ async def analyze_data(request: Request):
                 duckdb_conn.register("df", df)
 
             elif filename.lower().endswith((".png", ".jpg", ".jpeg")):
-                import io, os, json, re
-                import google.generativeai as genai
-
+                
                 # 1) Configure Gemini
                 api_key = os.getenv("GOOGLE_API_KEY")
                 if not api_key:
