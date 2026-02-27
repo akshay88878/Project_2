@@ -21,7 +21,7 @@ playwright
 
 langchain==0.3.27
 langchain-google-genai==2.0.8
-google-generativeai==0.8.5
+google-genai
 
 
 
