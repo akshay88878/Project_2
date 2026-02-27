@@ -31,7 +31,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import io, os, json, re
-import google.generativeai as genai
+from google import genai
 
 # Optional image conversion
 try:
