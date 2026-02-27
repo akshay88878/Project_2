@@ -31,7 +31,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import io, os, json, re
-from google import genai
+import google.generativeai as genai
 
 # Optional image conversion
 try:
@@ -58,7 +58,7 @@ except ImportError:
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.tools import tool
-from langchain.agents.tool_calling_agent import create_tool_calling_agent
+from langchain.agents import create_tool_calling_agent
 from langchain.agents import AgentExecutor
 
 load_dotenv()
