@@ -58,7 +58,7 @@ except ImportError:
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.tools import tool
-from langchain.agents import AgentExecutor, create_react_agent
+from langchain.agents import AgentExecutor, create_tool_calling_agent
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -449,7 +449,7 @@ You must:
     MessagesPlaceholder(variable_name="agent_scratchpad"),
 ])
 
-agent = create_react_agent(
+agent = create_tool_calling_agent(
     llm,
     tools,
     prompt
